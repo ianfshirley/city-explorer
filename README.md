@@ -11,7 +11,7 @@ A web app that gives users access to information about a city that they want to 
 
 ## Architecture
 React, Axios, Bootstrap
-[WRRC Diagram](./src/Screenshot%202022-11-14%20at%202.41.58%20PM.png)
+![WRRC Diagram](./src/Screenshot%202022-11-14%20at%202.41.58%20PM.png)
 
 ## Change Log
 <!-- Use this area to document the iterative changes made to your application as each feature is successfully implemented. Use time stamps. Here's an example:
