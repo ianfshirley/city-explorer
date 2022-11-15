@@ -16,7 +16,7 @@ A web app that gives users access to information about a city that they want to 
 <!-- Use this area to document the iterative changes made to your application as each feature is successfully implemented. Use time stamps. Here's an example:
 
 01-01-2001 4:59pm - Application now has a fully-functional express server, with a GET route for the location resource. -->
-
+11/14/2022 7:15pm - Added .gitignore, updated README, added Axios and bootstrap to package.json. Deployed to netlify.
 
 ## Credit and Collaborations
 <!-- Give credit (and a link) to other people or resources that helped you build this application. -->
