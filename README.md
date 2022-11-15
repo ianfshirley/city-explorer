@@ -10,7 +10,8 @@ A web app that gives users access to information about a city that they want to 
 <!-- What are the steps that a user must take in order to build this app on their own machine and get it running? -->
 
 ## Architecture
-<!-- Provide a detailed description of the application design. What technologies (languages, libraries, etc) you're using, and any other relevant design information. -->
+React, Axios, Bootstrap
+[WRRC Diagram](./src/Screenshot%202022-11-14%20at%202.41.58%20PM.png)
 
 ## Change Log
 <!-- Use this area to document the iterative changes made to your application as each feature is successfully implemented. Use time stamps. Here's an example:
@@ -19,4 +20,5 @@ A web app that gives users access to information about a city that they want to 
 11/14/2022 7:15pm - Added .gitignore, updated README, added Axios and bootstrap to package.json. Deployed to netlify.
 
 ## Credit and Collaborations
-<!-- Give credit (and a link) to other people or resources that helped you build this application. -->
+Partner: Daniel Shiraishi. Created WRRC diagram together
+Credit: Jason Christopher helped with modal construction and Brenda Jow helped with form/event handler
