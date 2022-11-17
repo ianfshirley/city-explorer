@@ -97,6 +97,7 @@ export default class Main extends React.Component {
           src={mapURL}
           alt={this.state.city.name + 'map'}
         />
+        <Weather forecast={this.state.weatherInfo} />
       </>
     )
 
@@ -114,7 +115,7 @@ export default class Main extends React.Component {
           {this.state.cityData.display_name && newCity}
         </div>
 
-        <Weather forecast={this.state.weatherInfo} />
+        
         
         
       </>
