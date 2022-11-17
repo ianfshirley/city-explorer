@@ -3,7 +3,8 @@ import axios from 'axios';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
-import Modal from 'react-bootstrap/Modal';
+// import Modal from 'react-bootstrap/Modal';
+import Weather from './Weather';
 
 
 export default class Main extends React.Component {
@@ -16,9 +17,10 @@ export default class Main extends React.Component {
       cityData: {},
       lat: '',
       lon: '',
+      weatherInfo: [],
       errorMsg: '',
       isError: false,
-      isModalShown: false
+      // isModalShown: false
     }
   }
 
@@ -40,11 +42,11 @@ export default class Main extends React.Component {
         cityData: locationInfo.data[0],
         isError: false,
         isAlertShown: false,
-        isModalShown: true,
+        // isModalShown: true,
         lat: locationInfo.data[0].lat,
         lon: locationInfo.data[0].lon
       })
-      this.handleWeather(locationInfo.data[0].lat, locationInfo.data[0].lon);
+      this.handleWeather(this.state.city);
     } catch (error) {
       this.setState({
         errorMsg: error.message,
@@ -53,20 +55,22 @@ export default class Main extends React.Component {
     }
   }
 
-  handleCloseModal = () => {
-    this.setState({
-      isModalShown: false,
-    })
-  }
+  // handleCloseModal = () => {
+  //   this.setState({
+  //     isModalShown: false,
+  //   })
+  // }
 
-  handleWeather = async (lat, lon) => {
+  handleWeather = async (city) => {
     try {
-      let weatherUrl = `${process.env.REACT_APP_SERVER}/weather?lat=${lat}&lon=${lon}&city_name=${this.state.city}`
+      console.log('here is the weather city', city)
+      let weatherUrl = `${process.env.REACT_APP_SERVER}/weather?city_name=${this.state.city}`
       console.log(weatherUrl);
-      let weatherInfo = await axios.get(weatherUrl)
-      console.log('weatherInfo: ', weatherInfo);
+      let weatherInfo = await (await axios.get(weatherUrl));
+      console.log('weatherInfo: ', weatherInfo.data);
       this.setState({
-        isError: false
+        isError: false,
+        weatherInfo: weatherInfo.data
       })
     } catch (error) {
       this.setState({
@@ -81,6 +85,21 @@ export default class Main extends React.Component {
 
     let mapURL = `https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_LOCATIONIQ_API_KEY}&center=${this.state.cityData.lat},${this.state.cityData.lon}&zoom=13`;
 
+    let newCity = (
+      <>
+        <div className='mapInfo'>
+          <h3 className='mapTitle'>City: {this.state.cityData.display_name}</h3>
+          <p>Latitude: {this.state.cityData.lat}</p>
+          <p>Longitude: {this.state.cityData.lon}</p>
+        </div>
+        <img
+          className='mapImg'
+          src={mapURL}
+          alt={this.state.city.name + 'map'}
+        />
+      </>
+    )
+
     return (
       <>
         <Form onSubmit={this.handleCitySubmit}>
@@ -91,35 +110,13 @@ export default class Main extends React.Component {
 
         {this.state.isError === true ? <Alert className="alert" variant="danger"><Alert.Heading>Error!</Alert.Heading><p>{this.state.errorMsg}</p></Alert> : <p className="alert"></p>}
 
-        <Modal
-          show={this.state.isModalShown}
-          onHide={this.handleCloseModal}
-          size="lg"
-          aria-labelledby="contained-modal-title-vcenter"
-          centered
-          dialogClassName="modal-900px"
-          className="modal"
-        >
-          <Modal.Header closeButton>
-            <Modal.Title id="contained-modal-title-vcenter">
-              <h3 className="modalTitle">{this.state.cityData.display_name}</h3>
-            </Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <p>Latitude: {this.state.cityData.lat}</p>
-            <p>Longitude: {this.state.cityData.lon}</p>
-            <div className="picDiv">
-              <img
-                className="modalMap"
-                src={mapURL}
-                alt={this.state.city.name + 'map'}
-              />
-            </div>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button id="modalButton" onClick={this.handleCloseModal}>Close</Button>
-          </Modal.Footer>
-        </Modal>
+        <div className='mapDiv'>
+          {this.state.cityData.display_name && newCity}
+        </div>
+
+        <Weather forecast={this.state.weatherInfo} />
+        
+        
       </>
     )
   }
