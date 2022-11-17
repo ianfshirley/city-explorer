@@ -61,9 +61,9 @@ export default class Main extends React.Component {
 
   handleWeather = async (lat, lon) => {
     try {
-      let url = `${process.env.REACT_APP_SERVER}/weather?lat=${lat}&lon=${lon}&city_name=${this.state.city}`
-      console.log(url);
-      let weatherInfo = await axios.get(url)
+      let weatherUrl = `${process.env.REACT_APP_SERVER}/weather?lat=${lat}&lon=${lon}&city_name=${this.state.city}`
+      console.log(weatherUrl);
+      let weatherInfo = await axios.get(weatherUrl)
       console.log('weatherInfo: ', weatherInfo);
       this.setState({
         isError: false
@@ -120,11 +120,6 @@ export default class Main extends React.Component {
             <Button id="modalButton" onClick={this.handleCloseModal}>Close</Button>
           </Modal.Footer>
         </Modal>
-        {/* {this.state.lat == true ? this.handleWeather(): this.state.errorMsg} */}
-        {/* <p>City: {this.state.cityData.display_name}</p>
-        <p>Latitude: {this.state.cityData.lat}</p>
-        <p>Longitude: {this.state.cityData.lon}</p>
-        <img src={mapURL} alt={this.state.cityData.display_name}/> */}
       </>
     )
   }
