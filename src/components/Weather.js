@@ -1,23 +1,25 @@
 import React from 'react';
 
 export default class Weather extends React.Component {
+
   render() {
-    console.log(this.props.forecast, typeof(this.props.forecast));
-    return(
+    const info = this.props.forecast[2];
+    console.log('info', info);
+    // console.log('important',info['app_temp']);
+    return (
       <>
+        <h3>Current Weather</h3>
         <div>
-          <h3>3 Day Weather Forecast</h3>
-          {this.props.forecast.map((day) => (
-            <>
-              <ul>
-                <li>
-                <p>date: {day.date}</p>
-                <p>description: {day.description}</p>
-                </li>
-              </ul>
-            </>
-          )
-          )}
+          {/* {info.map(key => {
+            return(<p>'hello'</p>)
+          })} */}
+          {/* {this.props.forecast[2].map((value, index) => {
+            return (
+              <p>{value}</p>
+            );
+            })
+          } */}
+          {this.props.forecast[3]}
         </div>
       </>
     )

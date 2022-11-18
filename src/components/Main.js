@@ -17,7 +17,7 @@ export default class Main extends React.Component {
       cityData: {},
       lat: '',
       lon: '',
-      weatherInfo: [],
+      weatherInfo: {},
       errorMsg: '',
       isError: false,
       // isModalShown: false
@@ -38,6 +38,8 @@ export default class Main extends React.Component {
       let locationInfo = await axios.get(`https://us1.locationiq.com/v1/search?key=${process.env.REACT_APP_LOCATIONIQ_API_KEY}&q=${this.state.city}&format=json`)
       // console.log('locationInfo: ', locationInfo);
       // save that data in state
+
+      
       this.setState({
         cityData: locationInfo.data[0],
         isError: false,
@@ -45,8 +47,11 @@ export default class Main extends React.Component {
         // isModalShown: true,
         lat: locationInfo.data[0].lat,
         lon: locationInfo.data[0].lon
-      })
-      this.handleWeather(this.state.city);
+      }, 
+        this.handleWeather
+      )
+
+      
     } catch (error) {
       this.setState({
         errorMsg: error.message,
@@ -61,13 +66,13 @@ export default class Main extends React.Component {
   //   })
   // }
 
-  handleWeather = async (city) => {
+  handleWeather = async (lat, lon) => {
     try {
-      console.log('here is the weather city', city)
-      let weatherUrl = `${process.env.REACT_APP_SERVER}/weather?city_name=${this.state.city}`
-      console.log(weatherUrl);
-      let weatherInfo = await (await axios.get(weatherUrl));
-      console.log('weatherInfo: ', weatherInfo.data);
+      let weatherUrl = `${process.env.REACT_APP_SERVER}/weather?lat=${this.state.lat}&lon=${this.state.lon}`
+      // console.log(weatherUrl);
+      let weatherInfo = await axios.get(weatherUrl);
+
+      // console.log('weatherInfo: ', this.state.weatherInfo);
       this.setState({
         isError: false,
         weatherInfo: weatherInfo.data
@@ -81,8 +86,8 @@ export default class Main extends React.Component {
   }
 
   render() {
-    console.log(this.state);
-
+    // console.log(this.state);
+    console.log('weatherInfo: ', this.state.weatherInfo);
     let mapURL = `https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_LOCATIONIQ_API_KEY}&center=${this.state.cityData.lat},${this.state.cityData.lon}&zoom=13`;
 
     let newCity = (
@@ -97,7 +102,6 @@ export default class Main extends React.Component {
           src={mapURL}
           alt={this.state.city.name + 'map'}
         />
-        <Weather forecast={this.state.weatherInfo} />
       </>
     )
 
@@ -113,6 +117,7 @@ export default class Main extends React.Component {
 
         <div className='mapDiv'>
           {this.state.cityData.display_name && newCity}
+          {this.state.weatherInfo && <Weather forecast={this.state.weatherInfo} />}
         </div>
 
         
