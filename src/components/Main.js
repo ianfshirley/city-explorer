@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 // import Modal from 'react-bootstrap/Modal';
 import Weather from './Weather';
+import Movies from './Movies';
 
 
 export default class Main extends React.Component {
@@ -18,6 +19,7 @@ export default class Main extends React.Component {
       lat: '',
       lon: '',
       weatherInfo: [],
+      movieInfo: [],
       errorMsg: '',
       isError: false,
       // isModalShown: false
@@ -33,13 +35,11 @@ export default class Main extends React.Component {
   handleCitySubmit = async (e) => {
     try {
       e.preventDefault();
-      // console.log(e.target.city.value);
+
       // get the data from the API
       let locationInfo = await axios.get(`https://us1.locationiq.com/v1/search?key=${process.env.REACT_APP_LOCATIONIQ_API_KEY}&q=${this.state.city}&format=json`)
-      // console.log('locationInfo: ', locationInfo);
-      // save that data in state
 
-      
+      // save that data in state
       this.setState({
         cityData: locationInfo.data[0],
         isError: false,
@@ -47,11 +47,14 @@ export default class Main extends React.Component {
         // isModalShown: true,
         lat: locationInfo.data[0].lat,
         lon: locationInfo.data[0].lon
-      }, 
-        this.handleWeather
+      },
+        () => {
+          this.handleWeather();
+          this.handleMovies();
+        }
       )
 
-      
+
     } catch (error) {
       this.setState({
         errorMsg: error.message,
@@ -59,12 +62,6 @@ export default class Main extends React.Component {
       })
     }
   }
-
-  // handleCloseModal = () => {
-  //   this.setState({
-  //     isModalShown: false,
-  //   })
-  // }
 
   handleWeather = async (lat, lon) => {
     try {
@@ -85,8 +82,25 @@ export default class Main extends React.Component {
     }
   }
 
+  handleMovies = async () => {
+    try {
+      console.log(' calling handleMovies')
+      let movieUrl = `${process.env.REACT_APP_SERVER}/movies?selectedCity=${this.state.city}`;
+      let movieInfo = await axios.get(movieUrl);
+      console.log('movieInfo: ', movieInfo.data);
+      this.setState({
+        isError: false,
+        movieInfo: movieInfo.data
+      })
+    } catch (error) {
+      this.setState({
+        errorMsg: error.message,
+        isError: true
+      })
+    }
+  }
+
   render() {
-    // console.log(this.state);
     console.log('newData: ', this.state.weatherInfo);
     let mapURL = `https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_LOCATIONIQ_API_KEY}&center=${this.state.cityData.lat},${this.state.cityData.lon}&zoom=13`;
 
@@ -117,12 +131,17 @@ export default class Main extends React.Component {
 
         <div className='mapDiv'>
           {this.state.cityData.display_name && newCity}
+        </div>
+        <div className='weatherDiv'>
           {this.state.weatherInfo && <Weather forecast={this.state.weatherInfo} />}
         </div>
+        <div className='movieDiv'>
+          {this.state.movieInfo && <Movies topTenMovies={this.state.movieInfo} />} 
+        </div>
 
-        
-        
-        
+
+
+
       </>
     )
   }
