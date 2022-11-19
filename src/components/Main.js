@@ -18,6 +18,7 @@ export default class Main extends React.Component {
       lat: '',
       lon: '',
       weatherInfo: [],
+      movieInfo: [],
       errorMsg: '',
       isError: false,
       // isModalShown: false
@@ -45,8 +46,11 @@ export default class Main extends React.Component {
         // isModalShown: true,
         lat: locationInfo.data[0].lat,
         lon: locationInfo.data[0].lon
-      }, 
-        this.handleWeather
+      },
+        () => {
+          this.handleWeather();
+          this.handleMovies();
+        } 
       )
 
       
@@ -68,6 +72,24 @@ export default class Main extends React.Component {
       this.setState({
         isError: false,
         weatherInfo: weatherInfo.data
+      })
+    } catch (error) {
+      this.setState({
+        errorMsg: error.message,
+        isError: true
+      })
+    }
+  }
+
+  handleMovies = async () => {
+    try{
+      console.log(' calling handleMovies' )
+      let movieUrl = `${process.env.REACT_APP_SERVER}/movies?selectedCity=${this.state.city}`;
+      let movieInfo = await axios.get(movieUrl);
+      console.log('movieInfo: ', movieInfo.data);
+      this.setState({
+        isError: false,
+        movieInfo: movieInfo.data
       })
     } catch (error) {
       this.setState({
