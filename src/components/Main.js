@@ -33,13 +33,11 @@ export default class Main extends React.Component {
   handleCitySubmit = async (e) => {
     try {
       e.preventDefault();
-      // console.log(e.target.city.value);
+
       // get the data from the API
       let locationInfo = await axios.get(`https://us1.locationiq.com/v1/search?key=${process.env.REACT_APP_LOCATIONIQ_API_KEY}&q=${this.state.city}&format=json`)
-      // console.log('locationInfo: ', locationInfo);
-      // save that data in state
 
-      
+      // save that data in state
       this.setState({
         cityData: locationInfo.data[0],
         isError: false,
@@ -59,12 +57,6 @@ export default class Main extends React.Component {
       })
     }
   }
-
-  // handleCloseModal = () => {
-  //   this.setState({
-  //     isModalShown: false,
-  //   })
-  // }
 
   handleWeather = async (lat, lon) => {
     try {
@@ -86,7 +78,6 @@ export default class Main extends React.Component {
   }
 
   render() {
-    // console.log(this.state);
     console.log('newData: ', this.state.weatherInfo);
     let mapURL = `https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_LOCATIONIQ_API_KEY}&center=${this.state.cityData.lat},${this.state.cityData.lon}&zoom=13`;
 
