@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 // import Modal from 'react-bootstrap/Modal';
 import Weather from './Weather';
+import Movies from './Movies';
 
 
 export default class Main extends React.Component {
@@ -50,10 +51,10 @@ export default class Main extends React.Component {
         () => {
           this.handleWeather();
           this.handleMovies();
-        } 
+        }
       )
 
-      
+
     } catch (error) {
       this.setState({
         errorMsg: error.message,
@@ -82,8 +83,8 @@ export default class Main extends React.Component {
   }
 
   handleMovies = async () => {
-    try{
-      console.log(' calling handleMovies' )
+    try {
+      console.log(' calling handleMovies')
       let movieUrl = `${process.env.REACT_APP_SERVER}/movies?selectedCity=${this.state.city}`;
       let movieInfo = await axios.get(movieUrl);
       console.log('movieInfo: ', movieInfo.data);
@@ -130,12 +131,17 @@ export default class Main extends React.Component {
 
         <div className='mapDiv'>
           {this.state.cityData.display_name && newCity}
+        </div>
+        <div className='weatherDiv'>
           {this.state.weatherInfo && <Weather forecast={this.state.weatherInfo} />}
         </div>
+        <div className='movieDiv'>
+          {this.state.movieInfo && <Movies topTenMovies={this.state.movieInfo} />} 
+        </div>
 
-        
-        
-        
+
+
+
       </>
     )
   }
