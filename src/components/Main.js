@@ -6,6 +6,7 @@ import Alert from 'react-bootstrap/Alert';
 // import Modal from 'react-bootstrap/Modal';
 import Weather from './Weather';
 import Movies from './Movies';
+import Location from './Location';
 
 
 export default class Main extends React.Component {
@@ -66,10 +67,8 @@ export default class Main extends React.Component {
   handleWeather = async (lat, lon) => {
     try {
       let weatherUrl = `${process.env.REACT_APP_SERVER}/weather?lat=${this.state.lat}&lon=${this.state.lon}`
-      // console.log(weatherUrl);
       let weatherInfo = await axios.get(weatherUrl);
 
-      console.log('weatherInfo: ', weatherInfo.data);
       this.setState({
         isError: false,
         weatherInfo: weatherInfo.data
@@ -84,10 +83,8 @@ export default class Main extends React.Component {
 
   handleMovies = async () => {
     try {
-      console.log(' calling handleMovies')
       let movieUrl = `${process.env.REACT_APP_SERVER}/movies?selectedCity=${this.state.city}`;
       let movieInfo = await axios.get(movieUrl);
-      console.log('movieInfo: ', movieInfo.data);
       this.setState({
         isError: false,
         movieInfo: movieInfo.data
@@ -101,23 +98,23 @@ export default class Main extends React.Component {
   }
 
   render() {
-    console.log('newData: ', this.state.weatherInfo);
     let mapURL = `https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_LOCATIONIQ_API_KEY}&center=${this.state.cityData.lat},${this.state.cityData.lon}&zoom=13`;
+    console.log(mapURL);
 
-    let newCity = (
-      <>
-        <div className='mapInfo'>
-          <h3 className='mapTitle'>City: {this.state.cityData.display_name}</h3>
-          <p>Latitude: {this.state.cityData.lat}</p>
-          <p>Longitude: {this.state.cityData.lon}</p>
-        </div>
-        <img
-          className='mapImg'
-          src={mapURL}
-          alt={this.state.city.name + 'map'}
-        />
-      </>
-    )
+    // let location = (
+    //   <>
+    //     <div className='mapInfo'>
+    //       <h3 className='mapTitle'>City: {this.state.cityData.display_name}</h3>
+    //       <p>Latitude: {this.state.cityData.lat}</p>
+    //       <p>Longitude: {this.state.cityData.lon}</p>
+    //     </div>
+    //     <img
+    //       className='mapImg'
+    //       src={mapURL}
+    //       alt={this.state.city.name + 'map'}
+    //     />
+    //   </>
+    // )
 
     return (
       <>
@@ -130,7 +127,7 @@ export default class Main extends React.Component {
         {this.state.isError === true ? <Alert className="alert" variant="danger"><Alert.Heading>Error!</Alert.Heading><p>{this.state.errorMsg}</p></Alert> : <p className="alert"></p>}
 
         <div className='mapDiv'>
-          {this.state.cityData.display_name && newCity}
+          {this.state.cityData.display_name && <Location location={this.state.cityData} mapURL={mapURL}/>}
         </div>
         <div className='weatherDiv'>
           {this.state.weatherInfo && <Weather forecast={this.state.weatherInfo} />}
@@ -138,9 +135,6 @@ export default class Main extends React.Component {
         <div className='movieDiv'>
           {this.state.movieInfo && <Movies topTenMovies={this.state.movieInfo} />} 
         </div>
-
-
-
 
       </>
     )
