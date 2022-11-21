@@ -3,14 +3,12 @@ import axios from 'axios';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
-// import Modal from 'react-bootstrap/Modal';
 import Weather from './Weather';
 import Movies from './Movies';
 import Location from './Location';
 
 
 export default class Main extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -23,7 +21,6 @@ export default class Main extends React.Component {
       movieInfo: [],
       errorMsg: '',
       isError: false,
-      // isModalShown: false
     }
   }
 
@@ -36,16 +33,13 @@ export default class Main extends React.Component {
   handleCitySubmit = async (e) => {
     try {
       e.preventDefault();
-
       // get the data from the API
       let locationInfo = await axios.get(`https://us1.locationiq.com/v1/search?key=${process.env.REACT_APP_LOCATIONIQ_API_KEY}&q=${this.state.city}&format=json`)
-
       // save that data in state
       this.setState({
         cityData: locationInfo.data[0],
         isError: false,
         isAlertShown: false,
-        // isModalShown: true,
         lat: locationInfo.data[0].lat,
         lon: locationInfo.data[0].lon
       },
@@ -54,8 +48,6 @@ export default class Main extends React.Component {
           this.handleMovies();
         }
       )
-
-
     } catch (error) {
       this.setState({
         errorMsg: error.message,
@@ -99,23 +91,6 @@ export default class Main extends React.Component {
 
   render() {
     let mapURL = `https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_LOCATIONIQ_API_KEY}&center=${this.state.cityData.lat},${this.state.cityData.lon}&zoom=13`;
-    console.log(mapURL);
-
-    // let location = (
-    //   <>
-    //     <div className='mapInfo'>
-    //       <h3 className='mapTitle'>City: {this.state.cityData.display_name}</h3>
-    //       <p>Latitude: {this.state.cityData.lat}</p>
-    //       <p>Longitude: {this.state.cityData.lon}</p>
-    //     </div>
-    //     <img
-    //       className='mapImg'
-    //       src={mapURL}
-    //       alt={this.state.city.name + 'map'}
-    //     />
-    //   </>
-    // )
-
     return (
       <>
         <Form onSubmit={this.handleCitySubmit}>
@@ -135,7 +110,6 @@ export default class Main extends React.Component {
         <div className='movieDiv'>
           {this.state.movieInfo && <Movies topTenMovies={this.state.movieInfo} />} 
         </div>
-
       </>
     )
   }

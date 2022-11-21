@@ -10,6 +10,8 @@ A web app that gives users access to information about a city that they want to 
 React, Axios, Bootstrap
 ![WRRC Diagram - Lab 7](./src/Screenshot%202022-11-14%20at%202.41.58%20PM.png)
 ![WRRC Diagram - Lab 8](./src/Screenshot%202022-11-16%20at%202.24.35%20PM.png)
+![WRRC Diagram - Lab 9](./src/Lab9WRRC.png)
+![WRRC Diagram - Lab 10](./src/lab10WRRC.jpg)
 
 ## Change Log
 11/14/2022 7:15pm - Added .gitignore, updated README, added Axios and bootstrap to package.json. Deployed to netlify.
