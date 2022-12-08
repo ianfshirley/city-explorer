@@ -6,6 +6,9 @@ import Alert from 'react-bootstrap/Alert';
 import Weather from './Weather';
 import Movies from './Movies';
 import Location from './Location';
+// import Carousel from 'react-bootstrap/Carousel';
+import './reset.css';
+import './App.css';
 
 
 export default class Main extends React.Component {
@@ -92,8 +95,8 @@ export default class Main extends React.Component {
   render() {
     let mapURL = `https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_LOCATIONIQ_API_KEY}&center=${this.state.cityData.lat},${this.state.cityData.lon}&zoom=13`;
     return (
-      <>
-        <Form onSubmit={this.handleCitySubmit}>
+      <section className='main'>
+        <Form className='form' onSubmit={this.handleCitySubmit}>
           <Form.Label>Search City</Form.Label>
           <Form.Control type="text" name="city" placeholder="enter city..." onChange={this.handleCityInput} />
           <Button type="submit" >Explore!</Button>
@@ -110,7 +113,7 @@ export default class Main extends React.Component {
         <div className='movieDiv'>
           {this.state.movieInfo && <Movies topTenMovies={this.state.movieInfo} />} 
         </div>
-      </>
+      </section>
     )
   }
 }
